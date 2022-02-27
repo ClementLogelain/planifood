@@ -1,3 +1,4 @@
+from dataclasses import field
 from rest_framework import serializers
 from .models import Category, Meal, MealUsing, Planification, Ingredient
 from django.contrib.auth.models import User
@@ -24,26 +25,32 @@ class UserSerializer(serializers.ModelSerializer):
 class MealSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meal
-        fields = ('id','title','process','duration','isBasic','owner')
+        fields = '__all__'
 
 
 class PlanificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Planification
-        fields = ('id','panified_at','owner','meal')
+        fields = '__all__'
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('id','name')
+        fields = ['name']
 
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = ('id','name','category')
+        fields = '__all__'
 
 class MealUsingSerializer(serializers.ModelSerializer):
     class Meta:
         model = MealUsing
         fields = '__all__'
+
+class UserFullSerializer(serializers.ModelSerializer):
+    ingredients_created=IngredientSerializer(read_only=True, many=True)
+    class Meta:
+        model = User
+        fields = ('id','username','email','ingredients_created')

@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 from django.db import models
 from enum import Enum
 from django.contrib.auth.models import User
@@ -20,7 +19,7 @@ class Meal(models.Model):
     process = models.TextField(null=True, blank=True)
     duration = models.IntegerField(null=True, blank=True)
     isBasic = models.BooleanField(default=True, blank=True)
-    owner = models.ForeignKey(User, related_name='meals', on_delete=models.CASCADE, null=False)
+    owner = models.ForeignKey(User, related_name='meals', on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.title
@@ -28,8 +27,8 @@ class Meal(models.Model):
 
 class Planification(models.Model):
     panified_at = models.DateTimeField(null=True,  blank=True)
-    owner = models.ForeignKey(User, related_name='planifications', on_delete=models.CASCADE, null=True)
-    meal = models.ForeignKey(Meal, related_name='planned', on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(User, related_name='planifications', on_delete=models.CASCADE, default=None)
+    meal = models.ForeignKey(Meal, related_name='planned', on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.panified_at," - ", self.meal
@@ -44,8 +43,8 @@ class Category(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=60, unique=True, null=True, blank=True)
-    category = models.ForeignKey(Category, related_name='ingredients', on_delete=models.CASCADE, null=True)
-    owner = models.ForeignKey(User, related_name='ingredients_created', on_delete=models.CASCADE, default=NULL)
+    category = models.ForeignKey(Category, related_name='ingredients', on_delete=models.CASCADE, default=None)
+    owner = models.ForeignKey(User, related_name='ingredients_created', on_delete=models.CASCADE, null=False)
 
     def __str__(self):
         return self.name
@@ -54,8 +53,8 @@ class MealUsing(models.Model):
     quantity = models.IntegerField(default=0, null=True)
     mesure = Mesure(value=Mesure.KG)
     using = models.TextField(null=True, blank=True)
-    meal = models.ForeignKey(Meal, related_name='used', on_delete=models.CASCADE, null=True)
-    ingredient = models.ForeignKey(Ingredient, related_name='usings', on_delete=models.CASCADE, null=True)
+    meal = models.ForeignKey(Meal, related_name='used', on_delete=models.CASCADE, default=None)
+    ingredient = models.ForeignKey(Ingredient, related_name='usings', on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.ingredient

@@ -9,7 +9,7 @@ from .models import Category, Ingredient, MealUsing, User
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .serializers import IngredientSerializer, MealUsingSerializer, MyTokenObtainPairSerializer
+from .serializers import IngredientSerializer, MealUsingSerializer, MyTokenObtainPairSerializer, UserFullSerializer
 
 # ---------------------- USERS -------------------------
 
@@ -21,6 +21,12 @@ class MyTokenObtainPairView(TokenObtainPairView):
 def getUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getUsersFull(request):
+    users = User.objects.all()
+    serializer = UserFullSerializer(users, many=True)
     return Response(serializer.data)
 
 
