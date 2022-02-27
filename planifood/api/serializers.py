@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Meal, Planification, Ingredient, IngredientUsed
+from .models import Category, Meal, MealUsing, Planification, Ingredient
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.forms.models import model_to_dict
@@ -35,7 +35,7 @@ class PlanificationSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ('id','name')
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -43,7 +43,7 @@ class IngredientSerializer(serializers.ModelSerializer):
         model = Ingredient
         fields = ('id','name','category')
 
-class IngredientUsedSerializer(serializers.ModelSerializer):
+class MealUsingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = IngredientUsed
-        fields = ('id','quantity','mesure','using','owner','ingredient')
+        model = MealUsing
+        fields = '__all__'

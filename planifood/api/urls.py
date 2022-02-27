@@ -4,7 +4,6 @@ from . import views
 from .views import MyTokenObtainPairView
 
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
     TokenRefreshView,
 )
 
@@ -15,9 +14,12 @@ urlpatterns = [
     path('auth/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-    path('ingredients/', views.getIngredients, name="ingredients"),
-    path('ingredients/post/', views.postIngredient, name="post"),
+    path('ingredients/', views.ingredientsLP, name="ingredients"),
+    path('ingredients/<str:id>/', views.ingredientsUDG, name="ingredient"),
 
-    path('categories/', views.getCategories, name="categories"),
-    path('categories/<str:id>/', views.getCategory, name="category")
+    path('mealUsing/', views.mealUsingLP,  name='ingredients_used'),
+    path('mealUsing/<str:id>/', views.mealUsingUDG, name='ingredient_used'),
+
+    path('categories/', views.categoryLP, name="categories"),
+    path('categories/<str:id>/', views.categoryUDG, name="category")
 ]
